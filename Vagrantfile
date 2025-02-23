@@ -1,6 +1,9 @@
 # Copyright 2025 dah4k
 # SPDX-License-Identifier: EPL-2.0
 
+## Override host environment variables for guest SSH session
+ENV["TERM"] = "xterm"
+
 Vagrant.configure("2") do |config|
     ## Vagrant Provider
     config.vm.provider "virtualbox" do |vb|
