@@ -55,6 +55,7 @@ Vagrant.configure("2") do |config|
       opensuse.vm.provision "shell", path: "files/opensuse_install_devtools.sh"
       opensuse.vm.provision "shell", path: "files/opensuse_install_bpf_devel.sh"
       opensuse.vm.provision "shell", path: "files/opensuse_build_capa.sh", privileged: false
+      opensuse.vm.provision "shell", path: "files/opensuse_build_asciinema.sh", privileged: false
     end
 
     ## OPNsense on FreeBSD 14.2
