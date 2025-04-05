@@ -1,0 +1,5 @@
+# Copyright 2025 dah4k
+# SPDX-License-Identifier: MIT-0
+[submodule "src/art"]
+	path = src/art
+	url = https://github.com/redcanaryco/atomic-red-team
