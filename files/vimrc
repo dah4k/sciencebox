@@ -1,0 +1,60 @@
+" Copyright 2024 dah4k
+" SPDX-License-Identifier: MIT-0
+
+call plug#begin(expand('~/.vim/plugged'))
+Plug 'dracula/vim', { 'as': 'vim-dracula' }
+call plug#end()
+
+" General Settings
+set nocompatible
+set backspace=2
+set encoding=utf-8
+filetype on
+
+" Must enable visual bell to disable *beeping* audio bell...
+set noerrorbells visualbell t_vb=
+
+" Diable Netrw history
+let g:netrw_dirhistmax=0
+
+" Disable undofile, Vim history, swapfile, and backup
+set noundofile viminfo=
+set noswapfile
+set nobackup
+
+" Visual Settings
+syntax clear
+syntax on
+set ruler
+set number
+set hlsearch
+set background=dark
+
+" More readable long text lines (Note: one escape space and one space separator)
+set wrap
+set showbreak=↳\  linebreak
+noremap j gj
+noremap k gk
+noremap H g0
+noremap L g$
+
+" 4-space indent
+set tabstop=4
+set softtabstop=0
+set shiftwidth=4
+set expandtab
+
+" Trim trailing whitespaces while preserving current view
+function! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfunction
+autocmd BufWritePre * call TrimWhitespace()
+
+" Mappings
+cnoreabbrev w1 w!
+nnoremap ; :
+vnoremap ; :
+nnoremap <F6> :bprevious<CR>
+nnoremap <F7> :bnext<CR>
