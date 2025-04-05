@@ -9,18 +9,20 @@ HOST_REQUIREMENTS    := virtualbox vagrant
 _ANSI_NORM  := \033[0m
 _ANSI_CYAN  := \033[36m
 
+.PHONY: help usage
 help usage:
 	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| awk 'BEGIN {FS = ":.*?##"}; {printf "$(_ANSI_CYAN)%-20s$(_ANSI_NORM) %s\n", $$1, $$2}'
 
+.PHONY: all
 all: ## Build and start all VMs (vagrant up)
 	vagrant up
 
+.PHONY: distclean
 distclean: ## Destroy all VMs (vagrant destroy --force)
 	vagrant destroy --force
 
+.PHONY: install_requirements
 install_requirements: ## Install host requirements
 	zypper repos $(HASHICORP_REPO_ALIAS) || sudo zypper addrepo --refresh --name $(HASHICORP_REPO_NAME) $(HASHICORP_REPO_URL) $(HASHICORP_REPO_ALIAS)
 	sudo zypper install $(HOST_REQUIREMENTS)
-
-.PHONY: help usage start stop distclean install_requirements
