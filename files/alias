@@ -1,0 +1,74 @@
+# Copyright 2025 dah4k
+# SPDX-License-Identifier: EPL-2.0
+
+unalias -a
+
+alias ..="cd .."
+alias -- +="pushd ."
+alias -- -="popd"
+
+alias date="LC_TIME=en_GB.UTF-8 date"
+alias la="ls -Altr"
+alias ls="ls -F --color=auto"
+
+alias mkae="make"
+alias maek="make"
+alias amke="make"
+
+# Fix distros calling `fdfind`
+# Reference: https://github.com/sharkdp/fd/
+alias fd='_fd(){
+    if $(which fdfind 2>/dev/null); then
+        fdfind "$@";
+    else fd "$@";
+    fi;
+};_fd'
+
+# Fix ERROR: XMLRPC request failed [code: -32500]
+# Reference: https://github.com/victorgarric/pip_search/
+alias pip='_pip(){
+    if [ $1 = "search" ]; then
+        pip_search --date_format "%Y-%m-%d" "$2";
+    else pip "$@";
+    fi;
+};_pip'
+
+# Aliases for Git
+alias gcd='git checkout'
+alias gci='git commit'
+alias gdf='git diff'
+alias gst='git status'
+
+# Like `git branch --list --all` but with delta from Main branch
+gls()
+{
+    MAIN_BRANCHES="
+        origin/main
+        origin/master
+        origin/develop
+        origin/dev
+    "
+    for x in $MAIN_BRANCHES; do
+        if [[ -n $(git rev-parse --verify --quiet $x) ]]; then
+            main_branch="$x"
+            break
+        fi
+    done
+    CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+    RED="\033[0;31m"
+    GREEN="\033[0;32m"
+    NORM="\033[0m"
+    git for-each-ref --format='%(refname:short) %(committerdate:relative)' refs/heads refs/remotes |
+        while read local_branch modified; do
+            behind_ahead=`git rev-list --count --left-right $main_branch...$local_branch`
+            fmt="%-50s -%-5d +%-5d (%s)"
+            if [[ $local_branch == $CURRENT_BRANCH ]]; then
+                printf "* ${GREEN}${fmt}${NORM}\n" $local_branch $behind_ahead "$modified"
+            elif [[ $local_branch == origin/* ]]; then
+                printf "  ${RED}${fmt}${NORM}\n" remotes/$local_branch $behind_ahead "$modified"
+            else
+                printf "  ${fmt}\n" $local_branch $behind_ahead "$modified"
+            fi
+        done
+}
