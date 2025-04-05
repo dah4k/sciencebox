@@ -3,3 +3,6 @@
 [submodule "src/art"]
 	path = src/art
 	url = https://github.com/redcanaryco/atomic-red-team
+[submodule "src/openssh"]
+	path = src/openssh
+	url = https://github.com/openssh/openssh-portable
