@@ -4,7 +4,7 @@
 HASHICORP_REPO_URL   := https://rpm.releases.hashicorp.com/RHEL/9/$$basearch/stable
 HASHICORP_REPO_NAME  := "Hashicorp Stable - RHEL 9 - $$basearch"
 HASHICORP_REPO_ALIAS := hashicorp
-HOST_REQUIREMENTS    := virtualbox vagrant
+HOST_REQUIREMENTS    := virtualbox vagrant ansible
 
 _ANSI_NORM  := \033[0m
 _ANSI_CYAN  := \033[36m
@@ -29,4 +29,4 @@ distclean: ## Destroy all VMs (vagrant destroy --force)
 .PHONY: install_requirements
 install_requirements: ## Install host requirements
 	zypper repos $(HASHICORP_REPO_ALIAS) || sudo zypper addrepo --refresh --name $(HASHICORP_REPO_NAME) $(HASHICORP_REPO_URL) $(HASHICORP_REPO_ALIAS)
-	sudo zypper install $(HOST_REQUIREMENTS)
+	sudo zypper install --no-recommends $(HOST_REQUIREMENTS)
