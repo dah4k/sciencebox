@@ -18,6 +18,10 @@ help usage:
 all: ## Build and start all VMs (vagrant up)
 	vagrant up
 
+.PHONY: test
+test: ## Build and start Test VM (vagrant up test)
+	vagrant up $@
+
 .PHONY: distclean
 distclean: ## Destroy all VMs (vagrant destroy --force)
 	vagrant destroy --force

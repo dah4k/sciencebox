@@ -37,6 +37,14 @@ Vagrant.configure("2") do |config|
           SHELL
     end
 
+    ## Ubuntu 22.04 (Jammy Jellyfish)
+    ## https://portal.cloud.hashicorp.com/vagrant/discover/bento/ubuntu-22.04
+    config.vm.define "test", primary: true do |ubuntu|
+      ubuntu.vm.box = "bento/ubuntu-22.04"
+      ubuntu.vm.box_version = "202502.21.0"
+      ubuntu.vm.hostname = "test"
+    end
+
     ## Debian 12
     ## https://portal.cloud.hashicorp.com/vagrant/discover/debian/bookworm64
     config.vm.define "debian", autostart: false do |debian|
@@ -47,7 +55,7 @@ Vagrant.configure("2") do |config|
 
     ## openSUSE Leap 15.6
     ## https://portal.cloud.hashicorp.com/vagrant/discover/bento/opensuse-leap-15.6
-    config.vm.define "opensuse", primary: true do |opensuse|
+    config.vm.define "opensuse", autostart: false do |opensuse|
       opensuse.vm.box = "bento/opensuse-leap-15.6"
       opensuse.vm.box_version = "202502.21.0"
       opensuse.vm.hostname = "opensuse"
