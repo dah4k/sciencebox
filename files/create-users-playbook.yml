@@ -1,25 +1,44 @@
 ---
-## See Also https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+# Copyright 2025 dah4k
+# SPDX-License-Identifier: EPL-2.0
+# See Also https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
 
 - hosts: all
-  become: yes  # Run tasks with root/sudo privileges
+  become: yes  # Run Ansible tasks with root/sudo privileges
   become_method: sudo
+  vars:
+    users:
+      - jdoe-sa
+      - jsmith
+    admins:
+      - jdoe-sa
 
   tasks:
-  - name: Create Sudo/Admin user 'jdoe-sa' and generate RSA SSH key
-    ansible.builtin.user:
-      name: jdoe-sa
-      comment: John Doe
-      groups: sudo
-      generate_ssh_key: yes
-      ssh_key_bits: 2048
-      ssh_key_file: .ssh/id_rsa
+  - name: Make sure 'admin' group is present
+    group:
+      name: admin
+      state: present
 
-  - name: Create regular user 'jsmith' and generate RSA SSH key
-    ansible.builtin.user:
-      name: jsmith
-      comment: John Smith
+  - name: Allow 'admin' group to have passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%admin'
+      line: '%admin ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+  - name: Create all users and generate RSA SSH key
+    user:
+      name: "{{ item }}"
       generate_ssh_key: yes
       ssh_key_bits: 2048
       ssh_key_file: .ssh/id_rsa
+    with_items: "{{ users }}"
+
+  - name: Add Admin users to 'admin' group
+    user:
+      name: "{{ item }}"
+      groups: admin
+      append: yes
+    with_items: "{{ admins }}"
 
