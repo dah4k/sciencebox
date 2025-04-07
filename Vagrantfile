@@ -43,6 +43,10 @@ Vagrant.configure("2") do |config|
       ubuntu.vm.box = "bento/ubuntu-22.04"
       ubuntu.vm.box_version = "202502.21.0"
       ubuntu.vm.hostname = "test"
+
+      ubuntu.vm.provision "ansible" do |ansible|
+        ansible.playbook = "files/create-users-playbook.yml"
+      end
     end
 
     ## Debian 12
