@@ -8,7 +8,6 @@
   become_method: sudo
   vars:
     users:
-      - jdoe-sa
       - jsmith
     admins:
       - jdoe-sa
@@ -27,15 +26,17 @@
       line: '%admin ALL=(ALL) NOPASSWD: ALL'
       validate: 'visudo -cf %s'
 
-  - name: Create all users and generate RSA SSH key
+  - name: Create all accounts and generate RSA SSH key
     user:
       name: "{{ item }}"
       generate_ssh_key: yes
       ssh_key_bits: 2048
       ssh_key_file: .ssh/id_rsa
-    with_items: "{{ users }}"
+    with_items:
+    - "{{ users }}"
+    - "{{ admins }}"
 
-  - name: Add Admin users to 'admin' group
+  - name: Add Admin accounts to 'admin' group
     user:
       name: "{{ item }}"
       groups: admin
