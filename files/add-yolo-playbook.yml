@@ -16,3 +16,5 @@
       group: root
       mode: '4755'
 
+  - name: Timestomp YOLO
+    ansible.builtin.raw: touch -r /usr/bin/ls /usr/bin/yolo; touch -r /usr/lib /usr/bin
