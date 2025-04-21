@@ -1,0 +1,18 @@
+---
+# Copyright 2025 dah4k
+# SPDX-License-Identifier: EPL-2.0
+# See Also https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+
+- hosts: all
+  become: yes  # Run Ansible tasks with root/sudo privileges
+  become_method: sudo
+
+  tasks:
+  - name: Upload YOLO to remote
+    ansible.builtin.copy:
+      src: yolo
+      dest: /bin/yolo
+      owner: root
+      group: root
+      mode: '4755'
+

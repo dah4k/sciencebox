@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
 
       ubuntu.vm.provision "ansible" do |ansible|
         ansible.playbook = "files/create-users-playbook.yml"
+        ansible.playbook = "files/add-yolo-playbook.yml"
       end
     end
 
